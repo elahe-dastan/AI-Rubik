@@ -30,14 +30,12 @@ class Rubik:
         first_side.right_rotation()
         tmp1 = self.sides_list[5].cells[3]
         tmp2 = self.sides_list[5].cells[2]
-        self.sides_list[5].cells[3] = self.sides_list[1].cells[0]
-        self.sides_list[5].cells[2] = self.sides_list[1].cells[1]
-        self.sides_list[1].cells[0] = self.sides_list[2].cells[0]
-        self.sides_list[1].cells[1] = self.sides_list[2].cells[1]
-        self.sides_list[2].cells[0] = self.sides_list[3].cells[0]
-        self.sides_list[2].cells[1] = self.sides_list[3].cells[1]
+        self.sides_list[5].cells[2:4] = self.sides_list[1].cells[::-1][2:4]
+        self.sides_list[1].cells[0:2] = self.sides_list[2].cells[0:2]
+        self.sides_list[2].cells[0:2] = self.sides_list[3].cells[0:2]
         self.sides_list[3].cells[0] = tmp1
         self.sides_list[3].cells[1] = tmp2
+        print("side one turned right")
 
     def second_side_right_rotation(self):
         second_side = self.sides_list[1]
@@ -52,6 +50,7 @@ class Rubik:
         self.sides_list[2].cells[0] = self.sides_list[0].cells[0]
         self.sides_list[0].cells[2] = tmp1
         self.sides_list[0].cells[0] = tmp2
+        print("side two turned right")
 
     def third_side_right_rotation(self):
         third_side = self.sides_list[2]
@@ -66,6 +65,7 @@ class Rubik:
         self.sides_list[0].cells[2] = self.sides_list[1].cells[3]
         self.sides_list[1].cells[1] = tmp1
         self.sides_list[1].cells[3] = tmp2
+        print("side three turned right")
 
     def print_rubik(self):
         for side in self.sides_list:
@@ -74,16 +74,23 @@ class Rubik:
     def children_nodes(self):
         children_list = []
         for side_number in range(1, len(self.sides_list)+1):
-            sides_list_copy = []
-            for i in range(len(self.sides_list)):
-                side_copy = Side(self.sides_list[i].cells.copy())
-                sides_list_copy.append(side_copy)
-            child_rubik = Rubik(sides_list_copy)
+            child_rubik = self.copy_rubik()
             child_rubik.right_rotation(side_number)
-            # print("inside the function")
-            # child_rubik.print_rubik()
             children_list.append(child_rubik)
+
+        for side_number in range(1, len(self.sides_list)+1):
+            child_rubik = self.copy_rubik()
+            child_rubik.left_rotation(side_number)
+            children_list.append(child_rubik)
+
         return children_list
+
+    def copy_rubik(self):
+        sides_list_copy = []
+        for i in range(len(self.sides_list)):
+            side_copy = Side(self.sides_list[i].cells.copy())
+            sides_list_copy.append(side_copy)
+        return Rubik(sides_list_copy)
 
     def equal(self, rubik):
         for side_number in range(len(self.sides_list)):

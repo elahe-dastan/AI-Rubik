@@ -14,12 +14,13 @@ class PriorityQueue:
     def delete(self):
         try:
             min = 0
-            for i in range(len(self.queue)):
-                if self.queue[i].path_cost < self.queue[min].path_cost:
-                    min = i
-            item = self.queue[i]
-            del self.queue[i]
-            return item
+            if len(self.queue) != 0:
+                for i in range(len(self.queue)):
+                    if self.queue[i].path_cost < self.queue[min].path_cost:
+                        min = i
+                item = self.queue[min]
+                del self.queue[min]
+                return item
         except IndexError:
             print()
             exit()

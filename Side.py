@@ -1,16 +1,9 @@
 class Side:
-    # def __init__(self, upper_left, upper_right, lower_left, lower_right):
-    #     self.cells = [upper_left, upper_right, lower_left, lower_right]
-
     def __init__(self, cells_list):
         self.cells = cells_list
 
     def right_rotation(self):
-        temp = self.cells[0]
-        self.cells[0] = self.cells[2]
-        self.cells[2] = self.cells[3]
-        self.cells[3] = self.cells[1]
-        self.cells[1] = temp
+        self.cells[0], self.cells[2], self.cells[3], self.cells[1] = self.cells[2], self.cells[3], self.cells[1], self.cells[0]
 
     def print_side(self):
         for j in self.cells:

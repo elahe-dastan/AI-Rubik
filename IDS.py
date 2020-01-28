@@ -4,15 +4,18 @@ from Graph import Graph
 
 class IDS(Algorithm):
 
-    def __init__(self, initial_rubik):
-        super().__init__()
-        self.graph = Graph(self.initial_rubik)
-        self.initial_rubik = initial_rubik
+    def __init__(self, graph):
+        super().__init__(graph)
+        # self.graph = Graph(initial_rubik)
+        # self.initial_rubik = initial_rubik
 
-    def execute(self, src, max_depth):
-        for i in range(max_depth):
-            if self.execute_DLS(src, i):
-                self.depth_of_answer = i
+    # src is a rubik which is a node of graph
+    def execute(self, initial_depth, max_depth):
+        for depth in range(initial_depth, max_depth):
+            self.reset_number_of_nodes_info()
+            self.remove_graph()
+            if self.execute_DLS(self.graph.initial_vertex, depth):
+                self.depth_of_answer = depth
                 return True
         return False
 
@@ -22,14 +25,10 @@ class IDS(Algorithm):
         if max_depth <= 0 : return False
 
         self.graph.add_children_nodes(src)
-        self.generated_nodes += len(src.children_nodes())
-        self.nodes_in_memory += len(src.children_nodes())
-        self.expanded_nodes += 1
+        self.update_number_of_nodes_info_after_expanding(len(src.children_nodes()))
         # for test
-        for children in self.graph.graph[src]:
-            for i in children:
-                if self.execute_DLS(i, max_depth - 1):
-                    return True
+        for child in self.graph.graph[src]:
+            if self.execute_DLS(child, max_depth - 1):
+                return True
         return False
-
 

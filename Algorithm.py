@@ -7,7 +7,9 @@ def side_completed(side):
 
 class Algorithm:
 
-    def __init__(self):
+    def __init__(self, graph):
+        self.inital_graph = graph
+        self.graph = graph
         self.generated_nodes = 0
         self.expanded_nodes = 0
         self.depth_of_answer = 0
@@ -25,3 +27,16 @@ class Algorithm:
             if rubik_in_queue.equal(rubik):
                 return True
         return False
+
+    def update_number_of_nodes_info_after_expanding(self, number_of_children):
+        self.generated_nodes += number_of_children
+        self.nodes_in_memory += number_of_children
+        self.expanded_nodes += 1
+
+    def reset_number_of_nodes_info(self):
+        self.generated_nodes = 0
+        self.nodes_in_memory = 0
+        self.expanded_nodes = 0
+
+    def remove_graph(self):
+        self.graph = self.inital_graph
